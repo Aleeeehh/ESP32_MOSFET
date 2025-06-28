@@ -1,14 +1,12 @@
 COMANDI CLI PLATFORMIO
 - pio home (ti apre la hub di platformIO da browser)
 - pio run --target upload (lanciato dentro la cartella del progetto, compila e uploda su scheda)
-- pio device monitor (monitor seriale)
+- clear
+ (monitor seriale)
 
 
 GPIO ESP32
-- 35 per led integrato
-
-GPIO ESP32CAM
-- 4 per flash
+- 35 per led integrato nella scheda
 
 
 ISTRUZIONI E APPUNTI
@@ -18,11 +16,8 @@ ISTRUZIONI E APPUNTI
 
 
 DA FARE
-- si perdono dei pacchetti di rete nello streaming?
-- pulsante per interrompere streaming o per cambiare risoluzione foto/video?
 - Dividi file e contenuto file src in modo elegante e ordinato (tipo backend)
 - Integrazione FreeRtos al posto di arduinoIDEs
-- integrazione YOLO semplice per un caso super semplice? (chiedi chat)
 
 TESI (da lunedì)
 - Prova ad integrare YOLO in modo semplice
