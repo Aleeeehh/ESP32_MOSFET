@@ -1,8 +1,13 @@
 COMANDI CLI PLATFORMIO
 - pio home (ti apre la hub di platformIO da browser)
 - pio run --target upload (lanciato dentro la cartella del progetto, compila e uploda su scheda)
-- clear
- (monitor seriale)
+- pio device monitor (monitor seriale)
+
+COMANDI CLI ESP-IDF
+- "source ~/.zshrc" quando apri il terminale
+- "idf.py build" compila e basta
+- "idf.py -p /dev/tty.usbserial-0001 flash" compila e uploda
+- "idf.py -p /dev/tty.usbserial-0001 monitor" (monitor seriale) ("control + ]" per uscire )
 
 
 GPIO ESP32
@@ -10,12 +15,17 @@ GPIO ESP32
 
 
 ISTRUZIONI E APPUNTI
+- in esp-idf, il codce che scrivi sta in /main
 - Ricorda di killare il terminale del seriale prima di fare upload nuovo firmware
 - Se cambi porta di collegamento esp a mac, cambia "upload_port" in platformio.ini
 - che tu stia usando una esp32cam oppure un esp32, cambia "board" in platformio.ini
 
 
 DA FARE
+- Cerca video youtube esc con DSHot
+- Usare libreria RMT per esp32 per implementare segnali Dshot
+- Cerca un modo per capire l'ESC come interpreta segnali, debugga (multimetro? oscilloscopio)
+- Cerca firmware/drivers/risorse online su github(link scatola) o sito produttore
 - Dividi file e contenuto file src in modo elegante e ordinato (tipo backend)
 - Integrazione FreeRtos al posto di arduinoIDEs
 
