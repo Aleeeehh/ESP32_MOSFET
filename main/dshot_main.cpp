@@ -13,50 +13,45 @@ extern "C" void app_main()
     printf("[INFO] Task watchdog disabilitato\n");
 
     // Inizializza ESC su GPIO 33 con protocollo DSHOT600
-    DShotRMT esc(GPIO_NUM_33, DSHOT600);
+    DShotRMT esc(GPIO_NUM_18, DSHOT600);
     esc.begin();
     printf("[INFO] ESC inizializzato con DShot600 su GPIO 33 (motore M1)\n");
 
-    // Arming: invia throttle 0 per 2 secondi (obbligatorio per ESC Bluejay)
-    printf("[INFO] Arming ESC Bluejay (2 secondi)...\n");
-    for (int i = 0; i < 1000; i++)
-    {
-        esc.setThrottle(0);
-        vTaskDelay(pdMS_TO_TICKS(2)); // 2ms x 1000 = 2s
-    }
-
-    // Test diagnostico sistematico
-    printf("[INFO] === TEST DIAGNOSTICO COMUNICAZIONE ESC ===\n");
+    // Test graduale di tutte le velocità di throttle
+    printf("[INFO] === TEST GRADUALE THROTTLE (incrementi di 100) ===\n");
 
     int test_count = 0;
     while (true)
     {
         test_count++;
-        printf("[INFO] === TEST #%d ===\n", test_count);
+        printf("[INFO] === CICLO #%d ===\n", test_count);
 
-        // Test 1: Throttle molto basso per vedere se il motore si muove
-        printf("[INFO] Test 1: Throttle basso (100) - Il motore dovrebbe muoversi leggermente\n");
-        esc.setThrottle(100);
-        vTaskDelay(pdMS_TO_TICKS(2000)); // 2 secondi per osservare
+        // Arming all'inizio di ogni ciclo per sicurezza
+        printf("[INFO] Arming ESC (4 secondi)...\n");
+        for (int i = 0; i < 2000; i++)
+        {
+            esc.setThrottle(0);
+            if (i % 200 == 0)
+            {
+                printf("[DEBUG] arming... %d ms\n", i * 2);
+            }
+            vTaskDelay(pdMS_TO_TICKS(2)); // 2ms x 2000 = 4000ms = 4s
+        }
 
-        // Test 2: Throttle medio
-        printf("[INFO] Test 2: Throttle medio (500) - Il motore dovrebbe girare più veloce\n");
-        esc.setThrottle(500);
-        vTaskDelay(pdMS_TO_TICKS(2000)); // 2 secondi per osservare
+        // Test tutte le velocità da 500 a 2000, incrementi di 500
+        for (int throttle = 500; throttle <= 2000; throttle += 500)
+        {
+            printf("[INFO] Throttle: %d - Test 2 secondi\n", throttle);
+            esc.setThrottle(throttle);
+            vTaskDelay(pdMS_TO_TICKS(2000)); // 2 secondo per ogni velocità
 
-        // Test 3: Throttle alto
-        printf("[INFO] Test 3: Throttle alto (1000) - Il motore dovrebbe girare veloce\n");
-        esc.setThrottle(1000);
-        vTaskDelay(pdMS_TO_TICKS(2000)); // 2 secondi per osservare
+            printf("[INFO] Pausa 1 secondo...\n");
+            esc.setThrottle(0);
+            vTaskDelay(pdMS_TO_TICKS(1000)); // Pausa per raffreddare
+        }
 
-        // Test 4: Torna a zero
-        printf("[INFO] Test 4: Torna a zero - Il motore dovrebbe fermarsi\n");
-        esc.setThrottle(0);
-        vTaskDelay(pdMS_TO_TICKS(2000)); // 2 secondi per osservare
-
-        printf("[INFO] Fine ciclo test. Se il motore non si muove, c'è un problema di comunicazione.\n");
-        printf("[INFO] Controlla: cablaggio, alimentazione ESC, configurazione DShot.\n");
-        vTaskDelay(pdMS_TO_TICKS(3000)); // 3 secondi di pausa
+        printf("[INFO] Fine ciclo completo. Riparto da capo...\n");
+        vTaskDelay(pdMS_TO_TICKS(3000)); // 3 secondi di pausa tra i cicli
     }
 
     printf("[INFO] Test completato. Loop idle.\n");
