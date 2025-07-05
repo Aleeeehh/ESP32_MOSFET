@@ -27,18 +27,16 @@ extern "C" void app_main()
 
 
         // Arming all'inizio di ogni ciclo per sicurezza
-        /*
-        printf("[INFO] Arming ESC (diversi secondi)...\n");
-        for (int i = 0; i < 1000; i++)
+        printf("[INFO] Arming ESC (2 secondi)...\n");
+        for (int i = 0; i < 5000; i++)
         {
             esc.setThrottle(0);
-            if (i % 200 == 0)
+            if (i % 500 == 0)
             {
                 printf("[DEBUG] arming... %d ms\n", i * 2);
             }
             vTaskDelay(pdMS_TO_TICKS(2));
         }
-            */
             
         
 //Calibrazione ESC, per ora disabilitata
@@ -50,37 +48,26 @@ extern "C" void app_main()
         vTaskDelay(pdMS_TO_TICKS(2000)); // 2 secondi
         */
 
-        // Test tutte le velocità
-        for (int throttle = 100; throttle <= 250; throttle += 50)
+        // Test tutte le velocità - RIDOTTO PER SICUREZZA
+        for (int throttle = 30; throttle <= 100; throttle += 20)  // RIDOTTO MOLTO per sicurezza
         {
-            printf("[INFO] Throttle: %d - Test 5 secondi\n", throttle);
+            printf("[INFO] Throttle: %d - Test 2 secondi\n", throttle);
             esc.setThrottle(throttle);
-            if (throttle > 200)
+            
+            // Test molto breve per sicurezza
+            for (int second = 1; second <= 2; second++)
             {
-                printf("[INFO] Throttle: %d - Test 3 secondi\n", throttle);
-                for (int second = 1; second <= 5; second++)
-             {
                 vTaskDelay(pdMS_TO_TICKS(1000)); // 1 secondo
-                printf("[DEBUG] Throttle %d - Secondo %d/3\n", throttle, second);
-             }
+                printf("[DEBUG] Throttle %d - Secondo %d/2\n", throttle, second);
             }
-            else{
-            // Print ogni secondo durante il test
-             for (int second = 1; second <= 3; second++)
-             {
-                vTaskDelay(pdMS_TO_TICKS(1000)); // 1 secondo
-                printf("[DEBUG] Throttle %d - Secondo %d/3\n", throttle, second);
-             }
-            }
-        
 
-            printf("[INFO] Pausa 1 secondo...\n");
+            printf("[INFO] Pausa 3 secondi...\n");  // Pausa aumentata molto
             esc.setThrottle(0);
-            vTaskDelay(pdMS_TO_TICKS(1000)); // Pausa per raffreddare
+            vTaskDelay(pdMS_TO_TICKS(3000)); // Pausa per raffreddare
         }
 
-        printf("[INFO] Fine ciclo completo. Riparto da capo...\n");
-        vTaskDelay(pdMS_TO_TICKS(3000)); // 3 secondi di pausa tra i cicli
+        printf("[INFO] Fine ciclo completo. Pausa lunga 10 secondi...\n");
+        vTaskDelay(pdMS_TO_TICKS(10000)); // 10 secondi di pausa tra i cicli
     }
 
     printf("[INFO] Test completato. Loop idle.\n");
