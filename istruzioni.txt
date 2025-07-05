@@ -8,6 +8,7 @@ COMANDI CLI ESP-IDF
 - "idf.py build" compila e basta
 - "idf.py -p /dev/tty.usbserial-0001 flash" compila e uploda
 - "idf.py -p /dev/tty.usbserial-0001 monitor" (monitor seriale) ("control + ]" per uscire )
+- "ls /dev/tty.*" per vedere le porte attive
 
 
 GPIO ESP32
@@ -22,13 +23,9 @@ ISTRUZIONI E APPUNTI
 
 
 DA FARE
-- Cerca video youtube esc con DSHot
-- Usare libreria RMT per esp32 per implementare segnali Dshot
-- Cerca un modo per capire l'ESC come interpreta segnali, debugga (multimetro? oscilloscopio)
-- Cerca firmware/drivers/risorse online su github(link scatola) o sito produttore
-- Dividi file e contenuto file src in modo elegante e ordinato (tipo backend)
-- Integrazione FreeRtos al posto di arduinoIDEs
-
-TESI (da lunedì)
-- Prova ad integrare YOLO in modo semplice
-- Ragiona per bene a possibili scopi della tesi
+- prova ad implementare PWM al posto di DSHot (funziona lo stesso?)
+- trova codice sorgente/documentazione bluejay affidabile su github, e cerca di comprendere interpretazione dei segnali
+- prova ad usare un'altra libreria per DSHOT
+- i fili di segnale CURR e NC possono tornare utili? Forse solo Curr, ma neanche tanto
+- altre idee?
+- inserisci libreria DshortRMT come dipendenza scaricabile con reconfigure
