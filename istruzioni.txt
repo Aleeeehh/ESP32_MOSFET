@@ -10,6 +10,9 @@ COMANDI CLI ESP-IDF
 - "idf.py -p /dev/tty.usbserial-0001 monitor" (monitor seriale) ("control + ]" per uscire )
 - "ls /dev/tty.*" per vedere le porte attive
 
+COMMIT DELLA LIBRERIA derdoktor667/DShotRMT CHE FUNZIONA CORRETTAMENTE
+Commits on Jun 19, 2025
+...rmt class objects
 
 GPIO ESP32
 - 35 per led integrato nella scheda

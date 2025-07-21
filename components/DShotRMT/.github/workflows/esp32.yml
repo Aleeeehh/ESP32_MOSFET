@@ -1,0 +1,34 @@
+name: Arduino CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@main
+
+    - name: Install repo as library
+      run: |
+        mkdir -p "$HOME/Arduino/libraries"
+        ln -s "$PWD" "$HOME/Arduino/libraries/."
+
+    - name: Install Arduino CLI
+      run: |
+        curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=/usr/local/bin sh
+        arduino-cli core update-index
+        arduino-cli core update-index --additional-urls https://dl.espressif.com/dl/package_esp32_index.json
+        arduino-cli core update-index --additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+        arduino-cli core install esp32:esp32 --additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+    
+    - name: Compile sketch
+      run: |
+        arduino-cli compile --fqbn esp32:esp32:esp32 ${{ github.workspace }}/examples/dshot300
+      env:
+        ARDUINO_LIBRARY_PATH: ${{ github.workspace }}/libraries
+        ARDUINO_DATA_PATH: ${{ github.workspace }}/arduino-data
